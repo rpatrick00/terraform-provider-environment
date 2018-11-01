@@ -31,4 +31,4 @@ The following arguments are supported:
 
 ### Attributes
 ___
-- `value` - The final value of the environment variable (after applying the `default`, if specified).
+- `value` - The final value of the environment variable (after applying the `default`, if specified.
