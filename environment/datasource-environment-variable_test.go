@@ -38,7 +38,7 @@ const errorUnexpectedEmptyValueTemplate string = "getEnvironmentVariableValue(%v
 const errorUnexpectedResultsTemplate string = "Input value %v returned %v instead of %v"
 const errorUnexpectedDefaultValueTemplate string = "getEnvironmentVariableValue(%v, %v, %v) returned the default value"
 
-func TestGetEnvironmentVariableValue_VariableSet(t *testing.T) {
+func TestGetEnvironmentVariableValueVariableSet(t *testing.T) {
 	name := knownName
 
 	testResult, err := getEnvironmentVariableValue(name, "", false)
@@ -49,7 +49,7 @@ func TestGetEnvironmentVariableValue_VariableSet(t *testing.T) {
 	}
 }
 
-func TestGetEnvironmentVariableValue_VariableSetDefault(t *testing.T) {
+func TestGetEnvironmentVariableValueVariableSetDefault(t *testing.T) {
 	name := knownName
 	defaultValue := "/foo/bar/baz123456"
 
@@ -63,7 +63,7 @@ func TestGetEnvironmentVariableValue_VariableSetDefault(t *testing.T) {
 	}
 }
 
-func TestGetEnvironmentVariableValue_VariableNotSet(t *testing.T) {
+func TestGetEnvironmentVariableValueVariableNotSet(t *testing.T) {
 	name := unknownName
 
 	testResult, err := getEnvironmentVariableValue(name, "", false)
@@ -74,7 +74,7 @@ func TestGetEnvironmentVariableValue_VariableNotSet(t *testing.T) {
 	}
 }
 
-func TestGetEnvironmentVariableValue_VariableNotSetDefault(t *testing.T) {
+func TestGetEnvironmentVariableValueVariableNotSetDefault(t *testing.T) {
 	name := unknownName
 	defaultValue := "testing123"
 
@@ -88,7 +88,7 @@ func TestGetEnvironmentVariableValue_VariableNotSetDefault(t *testing.T) {
 	}
 }
 
-func TestGetEnvironmentVariableValue_VariableNotSetDefaultFail(t *testing.T) {
+func TestGetEnvironmentVariableValueVariableNotSetDefaultFail(t *testing.T) {
 	name := unknownName
 	defaultValue := "foobar"
 
@@ -102,7 +102,7 @@ func TestGetEnvironmentVariableValue_VariableNotSetDefaultFail(t *testing.T) {
 	}
 }
 
-func TestGetEnvironmentVariableValue_VariableNotSetFail(t *testing.T) {
+func TestGetEnvironmentVariableValueVariableNotSetFail(t *testing.T) {
 	name := unknownName
 
 	_, err := getEnvironmentVariableValue(name, "", true)
@@ -111,7 +111,7 @@ func TestGetEnvironmentVariableValue_VariableNotSetFail(t *testing.T) {
 	}
 }
 
-func TestReplaceUnquotedBackslashes_BackslashOnEnd(t *testing.T) {
+func TestReplaceUnquotedBackslashesBackslashOnEnd(t *testing.T) {
 	testString := unquotedWindowsPathAtEnd
 	expectedResultString := quotedWindowsPathAtEnd
 
@@ -121,7 +121,7 @@ func TestReplaceUnquotedBackslashes_BackslashOnEnd(t *testing.T) {
 	}
 }
 
-func TestReplaceUnquotedBackslashes_QuotedBackslashOnEnd(t *testing.T) {
+func TestReplaceUnquotedBackslashesQuotedBackslashOnEnd(t *testing.T) {
 	testString := quotedWindowsPathAtEnd
 	expectedResultString := quotedWindowsPathAtEnd
 
@@ -131,7 +131,7 @@ func TestReplaceUnquotedBackslashes_QuotedBackslashOnEnd(t *testing.T) {
 	}
 }
 
-func TestReplaceUnquotedBackslashes_BackslashAtStart(t *testing.T) {
+func TestReplaceUnquotedBackslashesBackslashAtStart(t *testing.T) {
 	testString := unquotedWindowsPathAtStart
 	expectedResultString := quotedWindowsPathAtStart
 
@@ -141,7 +141,7 @@ func TestReplaceUnquotedBackslashes_BackslashAtStart(t *testing.T) {
 	}
 }
 
-func TestReplaceUnquotedBackslashes_QuotedBackslashAtStart(t *testing.T) {
+func TestReplaceUnquotedBackslashesQuotedBackslashAtStart(t *testing.T) {
 	testString := quotedWindowsPathAtStart
 	expectedResultString := quotedWindowsPathAtStart
 
@@ -151,7 +151,7 @@ func TestReplaceUnquotedBackslashes_QuotedBackslashAtStart(t *testing.T) {
 	}
 }
 
-func TestReplaceUnquotedBackslashes_Backslashs(t *testing.T) {
+func TestReplaceUnquotedBackslashesBackslashs(t *testing.T) {
 	testString := unquotedWindowsPath
 	expectedResultString := quotedWindowsPath
 
@@ -161,7 +161,7 @@ func TestReplaceUnquotedBackslashes_Backslashs(t *testing.T) {
 	}
 }
 
-func TestReplaceUnquotedBackslashes_QuotedBackslashs(t *testing.T) {
+func TestReplaceUnquotedBackslashesQuotedBackslashs(t *testing.T) {
 	testString := quotedWindowsPath
 	expectedResultString := quotedWindowsPath
 
@@ -171,7 +171,7 @@ func TestReplaceUnquotedBackslashes_QuotedBackslashs(t *testing.T) {
 	}
 }
 
-func TestReplaceUnquotedBackslashes_MixedBackslashs(t *testing.T) {
+func TestReplaceUnquotedBackslashesMixedBackslashs(t *testing.T) {
 	testString := unquotedMixedWindowsPath
 	expectedResultString := quotedMixedWindowsPath
 

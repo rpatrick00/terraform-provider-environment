@@ -15,23 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-TEST?=$$(go list ./... |grep -v 'vendor')
-GOFMT_FILES?=$$(find . -name '*.go' |grep -v vendor)
 PKG_NAME=environment
-CURDIR=`pwd`
+CURDIR=$$(pwd)
 
 default: build
 
-build: fmtcheck
+build: vet test
 	go install
 
 test: fmtcheck
-	go test -i $(TEST) || exit 1
-	echo $(TEST) | \
-		xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4
-
-testacc: fmtcheck
-	TF_ACC=1; go test $(TEST) -v $(TESTARGS) -timeout 120m
+	go test -v -coverprofile=coverage.out './...'
 
 vet:
 	@echo "go vet ."
@@ -42,10 +35,8 @@ vet:
 		exit 1; \
 	fi
 
-fmt:
-	@if [ -n "$(GOFMT_FILES)" ]; then \
-		gofmt -w $(GOFMT_FILES); \
-	fi
+sonar: test
+	sonar-scanner -Dsonar.projectKey=rpatrick00_terraform-provider-environment -Dsonar.organization=rpatrick00-github -Dsonar.sources=. -Dsonar.go.coverage.reportPaths=./coverage.out
 
 fmtcheck:
 	@sh -c "'$(CURDIR)/scripts/gofmtcheck.sh'"
