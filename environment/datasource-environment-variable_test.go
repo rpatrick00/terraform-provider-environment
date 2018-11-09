@@ -19,72 +19,91 @@ import (
 	"testing"
 )
 
+const knownName string = "HOME"      // POSIX-defined variable so should always be defined...
+const unknownName string = "ABCDEFG" // Hopefully random enough it will never be set
+
+const unquotedWindowsPathAtStart string = "\\foo"
+const quotedWindowsPathAtStart string = "\\\\foo"
+const unquotedWindowsPathAtEnd string = "c:\\"
+const quotedWindowsPathAtEnd string = "c:\\\\"
+const unquotedWindowsPath string = "c:\\foo\\bar\\baz"
+const quotedWindowsPath string = "c:\\\\foo\\\\bar\\\\baz"
+const unquotedMixedWindowsPath string = "c:\\foo\\\\bar\\baz"
+const quotedMixedWindowsPath string = "c:\\\\foo\\\\bar\\\\baz"
+
+const emptyString string = "\"\""
+
+const errorUnexpectedErrorTemplate string = "getEnvironmentVariableValue(%v, %v, %v) returned an error: %v"
+const errorUnexpectedEmptyValueTemplate string = "getEnvironmentVariableValue(%v, %v, %v) returned an empty value"
+const errorUnexpectedResultsTemplate string = "Input value %v returned %v instead of %v"
+const errorUnexpectedDefaultValueTemplate string = "getEnvironmentVariableValue(%v, %v, %v) returned the default value"
+
 func TestGetEnvironmentVariableValue_VariableSet(t *testing.T) {
-	name := "HOME" // POSIX-defined variable so should always be defined...
+	name := knownName
 
 	testResult, err := getEnvironmentVariableValue(name, "", false)
 	if err != nil {
-		t.Errorf("getEnvironmentVariableValue(%v, \"\", false) returned an error: %v", name, err)
+		t.Errorf(errorUnexpectedErrorTemplate, name, emptyString, false, err)
 	} else if len(testResult) == 0 {
-		t.Errorf("getEnvironmentVariableValue(%v, \"\", false) returned an empty value", name)
+		t.Errorf(errorUnexpectedEmptyValueTemplate, name, emptyString, false)
 	}
 }
 
 func TestGetEnvironmentVariableValue_VariableSetDefault(t *testing.T) {
-	name := "HOME" // POSIX-defined variable so should always be defined...
+	name := knownName
 	defaultValue := "/foo/bar/baz123456"
 
 	testResult, err := getEnvironmentVariableValue(name, defaultValue, false)
 	if err != nil {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, false) returned an error: %v", name, defaultValue, err)
+		t.Errorf(errorUnexpectedErrorTemplate, name, defaultValue, false, err)
 	} else if len(testResult) == 0 {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, false) returned an empty value", name, defaultValue)
+		t.Errorf(errorUnexpectedEmptyValueTemplate, name, defaultValue, false)
 	} else if testResult == defaultValue {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, false) returned the default value", name, defaultValue)
+		t.Errorf(errorUnexpectedDefaultValueTemplate, name, defaultValue, false)
 	}
 }
 
 func TestGetEnvironmentVariableValue_VariableNotSet(t *testing.T) {
-	name := "ABCDEFG" // Hopefully random enough it will never be set
+	name := unknownName
 
 	testResult, err := getEnvironmentVariableValue(name, "", false)
 	if err != nil {
-		t.Errorf("getEnvironmentVariableValue(%v, \"\", false) returned an error: %v", name, err)
+		t.Errorf(errorUnexpectedErrorTemplate, name, emptyString, false, err)
 	} else if len(testResult) != 0 {
-		t.Errorf("getEnvironmentVariableValue(%v, \"\", false) returned an empty value", name)
+		t.Errorf(errorUnexpectedEmptyValueTemplate, name, emptyString, false)
 	}
 }
 
 func TestGetEnvironmentVariableValue_VariableNotSetDefault(t *testing.T) {
-	name := "ABCDEFG" // Hopefully random enough it will never be set
-	defaultValue := "foobar"
+	name := unknownName
+	defaultValue := "testing123"
 
 	testResult, err := getEnvironmentVariableValue(name, defaultValue, false)
 	if err != nil {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, false) returned an error: %v", name, defaultValue, err)
+		t.Errorf(errorUnexpectedErrorTemplate, name, defaultValue, false, err)
 	} else if len(testResult) == 0 {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, false) returned an empty value", name, defaultValue)
+		t.Errorf(errorUnexpectedEmptyValueTemplate, name, defaultValue, false)
 	} else if testResult != defaultValue {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, false) did not return the default value", name, defaultValue)
+		t.Errorf(errorUnexpectedDefaultValueTemplate, name, defaultValue, false)
 	}
 }
 
 func TestGetEnvironmentVariableValue_VariableNotSetDefaultFail(t *testing.T) {
-	name := "ABCDEFG" // Hopefully random enough it will never be set
+	name := unknownName
 	defaultValue := "foobar"
 
 	testResult, err := getEnvironmentVariableValue(name, defaultValue, true)
 	if err != nil {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, true) returned an error: %v", name, defaultValue, err)
+		t.Errorf(errorUnexpectedErrorTemplate, name, defaultValue, true, err)
 	} else if len(testResult) == 0 {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, true) returned an empty value", name, defaultValue)
+		t.Errorf(errorUnexpectedEmptyValueTemplate, name, defaultValue, true)
 	} else if testResult != defaultValue {
-		t.Errorf("getEnvironmentVariableValue(%v, %v, false) did not return the default value", name, defaultValue)
+		t.Errorf("getEnvironmentVariableValue(%v, %v, %v) did not return the default value", name, defaultValue, false)
 	}
 }
 
 func TestGetEnvironmentVariableValue_VariableNotSetFail(t *testing.T) {
-	name := "ABCDEFG" // Hopefully random enough it will never be set
+	name := unknownName
 
 	_, err := getEnvironmentVariableValue(name, "", true)
 	if err == nil {
@@ -93,71 +112,71 @@ func TestGetEnvironmentVariableValue_VariableNotSetFail(t *testing.T) {
 }
 
 func TestReplaceUnquotedBackslashes_BackslashOnEnd(t *testing.T) {
-	testString := "c:\\"
-	expectedResultString := "c:\\\\"
+	testString := unquotedWindowsPathAtEnd
+	expectedResultString := quotedWindowsPathAtEnd
 
 	testResult := replaceUnquotedBackslashes(testString)
 	if testResult != expectedResultString {
-		t.Errorf("Input value %v returned %v instead of %v", testString, testResult, expectedResultString)
+		t.Errorf(errorUnexpectedResultsTemplate, testString, testResult, expectedResultString)
 	}
 }
 
 func TestReplaceUnquotedBackslashes_QuotedBackslashOnEnd(t *testing.T) {
-	testString := "c:\\\\"
-	expectedResultString := "c:\\\\"
+	testString := quotedWindowsPathAtEnd
+	expectedResultString := quotedWindowsPathAtEnd
 
 	testResult := replaceUnquotedBackslashes(testString)
 	if testResult != expectedResultString {
-		t.Errorf("Input value %v returned %v instead of %v", testString, testResult, expectedResultString)
+		t.Errorf(errorUnexpectedResultsTemplate, testString, testResult, expectedResultString)
 	}
 }
 
 func TestReplaceUnquotedBackslashes_BackslashAtStart(t *testing.T) {
-	testString := "\\foo"
-	expectedResultString := "\\\\foo"
+	testString := unquotedWindowsPathAtStart
+	expectedResultString := quotedWindowsPathAtStart
 
 	testResult := replaceUnquotedBackslashes(testString)
 	if testResult != expectedResultString {
-		t.Errorf("Input value %v returned %v instead of %v", testString, testResult, expectedResultString)
+		t.Errorf(errorUnexpectedResultsTemplate, testString, testResult, expectedResultString)
 	}
 }
 
 func TestReplaceUnquotedBackslashes_QuotedBackslashAtStart(t *testing.T) {
-	testString := "\\\\foo"
-	expectedResultString := "\\\\foo"
+	testString := quotedWindowsPathAtStart
+	expectedResultString := quotedWindowsPathAtStart
 
 	testResult := replaceUnquotedBackslashes(testString)
 	if testResult != expectedResultString {
-		t.Errorf("Input value %v returned %v instead of %v", testString, testResult, expectedResultString)
+		t.Errorf(errorUnexpectedResultsTemplate, testString, testResult, expectedResultString)
 	}
 }
 
 func TestReplaceUnquotedBackslashes_Backslashs(t *testing.T) {
-	testString := "c:\\foo\\bar\\baz"
-	expectedResultString := "c:\\\\foo\\\\bar\\\\baz"
+	testString := unquotedWindowsPath
+	expectedResultString := quotedWindowsPath
 
 	testResult := replaceUnquotedBackslashes(testString)
 	if testResult != expectedResultString {
-		t.Errorf("Input value %v returned %v instead of %v", testString, testResult, expectedResultString)
+		t.Errorf(errorUnexpectedResultsTemplate, testString, testResult, expectedResultString)
 	}
 }
 
 func TestReplaceUnquotedBackslashes_QuotedBackslashs(t *testing.T) {
-	testString := "c:\\\\foo\\\\bar\\\\baz"
-	expectedResultString := "c:\\\\foo\\\\bar\\\\baz"
+	testString := quotedWindowsPath
+	expectedResultString := quotedWindowsPath
 
 	testResult := replaceUnquotedBackslashes(testString)
 	if testResult != expectedResultString {
-		t.Errorf("Input value %v returned %v instead of %v", testString, testResult, expectedResultString)
+		t.Errorf(errorUnexpectedResultsTemplate, testString, testResult, expectedResultString)
 	}
 }
 
 func TestReplaceUnquotedBackslashes_MixedBackslashs(t *testing.T) {
-	testString := "c:\\foo\\\\bar\\baz"
-	expectedResultString := "c:\\\\foo\\\\bar\\\\baz"
+	testString := unquotedMixedWindowsPath
+	expectedResultString := quotedMixedWindowsPath
 
 	testResult := replaceUnquotedBackslashes(testString)
 	if testResult != expectedResultString {
-		t.Errorf("Input value %v returned %v instead of %v", testString, testResult, expectedResultString)
+		t.Errorf(errorUnexpectedResultsTemplate, testString, testResult, expectedResultString)
 	}
 }

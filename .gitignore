@@ -11,3 +11,4 @@ terraform.tfstate
 .*.swp
 .idea/
 *.iml
+.scannerwork/
