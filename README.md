@@ -27,7 +27,7 @@ The following arguments are supported:
 - `name` - (Required) The name of the environment variable whose value should be used.
 - `default` - (Optional) The default value to use should the environment variable not be set or set to an empty string.
 - `fail_if_empty` - (Optional) Whether or not the data source read should fail if the final value of the environment variable (after applying the `default`, if specified), if empty.  The default value is `false`.
-- `normalize_file_path` - (Optional) Whether or not to treat the final value as a file path, which means makign sure to quote any backslashes in the path when running on the Windows platform.  The default value is `false`.
+- `normalize_file_path` - (Optional) Whether or not to treat the final value as a file path, which means making sure to quote any backslashes in the path when running on the Windows platform.  The default value is `false`.
 
 ### Attributes
 ___
