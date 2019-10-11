@@ -11,7 +11,7 @@ provider "environment" {}
 
 data "environment_variable" "HOME" {
   name = "HOME"
-  failIfEmpty = true
+  fail_if_empty = true
   normalize_file_path = true
 }
 
