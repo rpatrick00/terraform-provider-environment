@@ -16,9 +16,9 @@
 package main
 
 import (
-	"github.com/hashicorp/terraform/plugin"
-	"github.com/hashicorp/terraform/terraform"
-	"github.com/rpatrick00/terraform-provider-environment/environment"
+	"github.com/gaarutyunov/terraform-provider-environment/environment"
+	"github.com/hashicorp/terraform-plugin-sdk/plugin"
+	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 )
 
 func main() {

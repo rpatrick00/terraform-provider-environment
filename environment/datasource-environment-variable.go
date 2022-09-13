@@ -2,7 +2,7 @@ package environment
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"os"
 	"strings"
 )
@@ -12,27 +12,27 @@ func dataSourceEnvironmentVariable() *schema.Resource {
 		Read: dataSourceEnvironmentVariableRead,
 
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
+			"name": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"value": &schema.Schema{
+			"value": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"default": &schema.Schema{
+			"default": {
 				Description: "The default value to return if the variable value is empty",
 				Type:        schema.TypeString,
 				Optional:    true,
 				Default:     "",
 			},
-			"fail_if_empty": &schema.Schema{
+			"fail_if_empty": {
 				Description: "If true, an error will be generated if the variable value and its default value are empty",
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
 			},
-			"normalize_file_path": &schema.Schema{
+			"normalize_file_path": {
 				Description: "Treat the value as a file system path and quote any backslash path separators, as needed to fix up Windows paths",
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -58,7 +58,10 @@ func dataSourceEnvironmentVariableRead(d *schema.ResourceData, _ interface{}) er
 		if os.PathSeparator == '\\' && normalizeFilePath {
 			value = replaceUnquotedBackslashes(value)
 		}
-		d.Set("value", value)
+		err = d.Set("value", value)
+		if err != nil {
+			return err
+		}
 	} else {
 		return fmt.Errorf("the environment variable name was not specified")
 	}

@@ -13,3 +13,5 @@ terraform.tfstate
 *.iml
 .scannerwork/
 coverage.out
+build
+.DS_Store

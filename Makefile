@@ -15,39 +15,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-PKG_NAME=environment
-CURDIR=$$(pwd)
-
-default: build
-
-build: vet test
-	go install
+PKG_NAME=terraform-provider-environment
 
 test: fmtcheck
 	go test -v -coverprofile=coverage.out './...'
 
-vet:
-	@echo "go vet ."
-	@go vet $$(go list ./... | grep -v vendor/) ; if [ $$? -eq 1 ]; then \
-		echo ""; \
-		echo "Vet found suspicious constructs. Please check the reported constructs"; \
-		echo "and fix them if necessary before submitting the code for review."; \
-		exit 1; \
-	fi
-
-sonar: test
-	sonar-scanner -Dsonar.projectKey=rpatrick00_terraform-provider-environment -Dsonar.organization=rpatrick00-github -Dsonar.sources=. -Dsonar.go.coverage.reportPaths=./coverage.out
-
 fmtcheck:
-	@sh -c "'$(CURDIR)/scripts/gofmtcheck.sh'"
+	@chmod +x ./scripts/gofmtcheck.sh
+	@sh -c ./scripts/gofmtcheck.sh
 
 errcheck:
-	@sh -c "'$(CURDIR)/scripts/errcheck.sh'"
+	@chmod +x ./scripts/errcheck.sh
+	@sh -c ./scripts/errcheck.sh
 
-test-compile:
-	@if [ "$(TEST)" = "./..." ]; then \
-		echo "ERROR: Set TEST to a specific package. For example,"; \
-		echo "  make test-compile TEST=./$(PKG_NAME)"; \
-		exit 1; \
-	fi
-	go test -c $(TEST) $(TESTARGS)
+compile:
+	@go build -o build/$(PKG_NAME)
+
+cp:
+	@mkdir -p ~/.terraform.d/plugins/terraform.com/provider/environment/1.0.0/$(go env GOHOSTOS)_$(go env GOHOSTARCH)
+	@cp build/$(PKG_NAME) ~/.terraform.d/plugins/terraform.com/provider/environment/1.0.0/$(go env GOHOSTOS)_$(go env GOHOSTARCH)
