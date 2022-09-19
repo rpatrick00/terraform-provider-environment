@@ -15,14 +15,14 @@ go install github.com/gaarutyunov/terraform-provider-environment@latest
 2. Copy:
 
 ```shell
-mkdir -p .terraform/plugins/registry.terraform.io/hashicorp/environment/<Version>/<GOOS>_<GOARCH>
-cp <Path to binary> .terraform/plugins/registry.terraform.io/hashicorp/environment/<Version/<GOOS>_<GOARCH>
+mkdir -p ~/.terraform.d/plugins/github.com/gaarutyunov/environment/<Version>/<GOOS>_<GOARCH>
+cp <Path to binary> ~/.terraform.d/plugins/github.com/gaarutyunov/environment/<Version/<GOOS>_<GOARCH>
 ```
 
 For example:
 ```shell
-mkdir -p .terraform/plugins/registry.terraform.io/hashicorp/environment/1.0.0/darwin_amd64
-cp /usr/local/go/bin/terraform-provider-environment .terraform/plugins/registry.terraform.io/hashicorp/environment/1.0.0/darwin_amd64
+mkdir -p ~/.terraform.d/plugins/github.com/gaarutyunov/environment/1.0.0/darwin_amd64
+cp /usr/local/go/bin/terraform-provider-environment ~/.terraform.d/plugins/github.com/gaarutyunov/environment/1.0.0/darwin_amd64
 ```
 
 ## environment_variable Data Source
