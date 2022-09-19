@@ -15,8 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-PKG_NAME=terraform-provider-environment
-
 test: fmtcheck
 	go test -v -coverprofile=coverage.out './...'
 
@@ -27,10 +25,3 @@ fmtcheck:
 errcheck:
 	@chmod +x ./scripts/errcheck.sh
 	@sh -c ./scripts/errcheck.sh
-
-compile:
-	@go build -o build/$(PKG_NAME)
-
-cp:
-	@mkdir -p ~/.terraform.d/plugins/terraform.com/provider/environment/1.0.0/$(go env GOHOSTOS)_$(go env GOHOSTARCH)
-	@cp build/$(PKG_NAME) ~/.terraform.d/plugins/terraform.com/provider/environment/1.0.0/$(go env GOHOSTOS)_$(go env GOHOSTARCH)
