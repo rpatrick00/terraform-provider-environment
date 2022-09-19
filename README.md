@@ -9,14 +9,14 @@ The Environment provider is a utility provider for including local environment v
 Or Install:
 
 ```shell
-go install github.com/gaarutyunov/terraform-provider-environment@<Version of release>
+go install github.com/gaarutyunov/terraform-provider-environment@latest
 ```
 
 2. Copy:
 
 ```shell
-mkdir -p .terraform/plugins/registry.terraform.io/hashicorp/environment/<Version of downloaded release>/<GOOS>_<GOARCH>
-cp <Path to binary> .terraform/plugins/registry.terraform.io/hashicorp/environment/1.0.0/<GOOS>_<GOARCH>
+mkdir -p .terraform/plugins/registry.terraform.io/hashicorp/environment/<Version>/<GOOS>_<GOARCH>
+cp <Path to binary> .terraform/plugins/registry.terraform.io/hashicorp/environment/<Version/<GOOS>_<GOARCH>
 ```
 
 For example:
