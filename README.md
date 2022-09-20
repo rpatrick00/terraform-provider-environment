@@ -2,11 +2,43 @@
 
 The Environment provider is a utility provider for including local environment variables as part of a Terraform configuration.  The provider itself requires no configuration.
 
+## Installation
+
+1. Download an appropriate binary from [Releases page](https://github.com/gaarutyunov/terraform-provider-environment/releases)
+
+Or Install:
+
+```shell
+go install github.com/gaarutyunov/terraform-provider-environment@latest
+```
+
+2. Copy:
+
+```shell
+mkdir -p ~/.terraform.d/plugins/github.com/gaarutyunov/environment/<Version>/<GOOS>_<GOARCH>
+cp <Path to binary> ~/.terraform.d/plugins/github.com/gaarutyunov/environment/<Version/<GOOS>_<GOARCH>
+```
+
+For example:
+```shell
+mkdir -p ~/.terraform.d/plugins/github.com/gaarutyunov/environment/1.0.0/darwin_amd64
+cp /usr/local/go/bin/terraform-provider-environment ~/.terraform.d/plugins/github.com/gaarutyunov/environment/1.0.0/darwin_amd64
+```
+
 ## environment_variable Data Source
 
  The environment_variable data source provides a mechanism for a Terraform configuration to read values of local environment variables and incorporate them into a Terraform configuration.  This helps make it easier to make the Terraform script machine independent.  For example, when configuring a managed Kubernetes cluster on AWS, the Kubernetes config file needs to be modified to allow Kubernetes commands to successfully connect and authenticate to the Kubernetes API server.  The config file is typically written to `~/.kube/` directory, but this path does not work on Windows.  By providing access to the HOME environment variable, it is possible to compute the path based on the user's home directory without assuming an operating system.
  
  ```hcl
+terraform {
+  required_providers {
+    environment = {
+      source = "terraform-provider-environment"
+      version = ">= 1.0.0"
+    }
+  }
+}
+ 
 provider "environment" {}
 
 data "environment_variable" "HOME" {
