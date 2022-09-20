@@ -1,4 +1,4 @@
-module github.com/rpatrick/terraform-provider-environment
+module github.com/rpatrick00/terraform-provider-environment
 
 go 1.17
 
