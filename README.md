@@ -4,25 +4,25 @@ The Environment provider is a utility provider for including local environment v
 
 ## Installation
 
-1. Download an appropriate binary from [Releases page](https://github.com/gaarutyunov/terraform-provider-environment/releases)
+1. Download an appropriate binary from [Releases page](https://github.com/rpatrick00/terraform-provider-environment/releases)
 
 Or Install:
 
 ```shell
-go install github.com/gaarutyunov/terraform-provider-environment@latest
+go install github.com/rpatrick00/terraform-provider-environment@latest
 ```
 
 2. Copy:
 
 ```shell
-mkdir -p ~/.terraform.d/plugins/github.com/gaarutyunov/environment/<Version>/<GOOS>_<GOARCH>
-cp <Path to binary> ~/.terraform.d/plugins/github.com/gaarutyunov/environment/<Version/<GOOS>_<GOARCH>
+mkdir -p ~/.terraform.d/plugins/github.com/rpatrick00/environment/<Version>/<GOOS>_<GOARCH>
+cp <Path to binary> ~/.terraform.d/plugins/github.com/rpatrick00/environment/<Version/<GOOS>_<GOARCH>
 ```
 
 For example:
 ```shell
-mkdir -p ~/.terraform.d/plugins/github.com/gaarutyunov/environment/1.0.0/darwin_amd64
-cp /usr/local/go/bin/terraform-provider-environment ~/.terraform.d/plugins/github.com/gaarutyunov/environment/1.0.0/darwin_amd64
+mkdir -p ~/.terraform.d/plugins/github.com/rpatrick00/environment/1.0.0/darwin_amd64
+cp /usr/local/go/bin/terraform-provider-environment ~/.terraform.d/plugins/github.com/rpatrick00/environment/1.0.0/darwin_amd64
 ```
 
 ## environment_variable Data Source
