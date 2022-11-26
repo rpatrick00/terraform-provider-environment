@@ -1,7 +1,8 @@
+#!/usr/bin/env bash
 #
 # Adapted from https://github.com/terraform-providers/terraform-provider-kubernetes
 #
-# Copyright 2018 Robert Patrick <rhpatrick@gmail.com>
+# Copyright 2022 Robert Patrick <rhpatrick@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,17 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-test: fmtcheck
-	go test -v -coverprofile=coverage.out './...'
-
-fmtcheck:
-	@chmod +x ./scripts/gofmtcheck.sh
-	@sh -c ./scripts/gofmtcheck.sh
-
-errcheck:
-	@chmod +x ./scripts/errcheck.sh
-	@sh -c ./scripts/errcheck.sh
-
-fmt:
-	@chmod +x ./scripts/gofmt.sh
-	@sh -c ./scripts/gofmt.sh
+#
+# Update gofmt
+echo "==> Reformatting code to comply with gofmt requirements..."
+gofmt_files=$(gofmt -l -w `find . -name '*.go' | grep -v vendor`)
+if [[ -n "${gofmt_files}" ]]; then
+    echo 'gofmt reformatted the following files:'
+    echo "${gofmt_files}"
+else
+    echo "No files required reformatting"
+fi
